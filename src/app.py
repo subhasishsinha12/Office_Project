@@ -61,7 +61,10 @@ def index():
             '<Loan Amount>': request.form.get('loan_amount'),
             '<Sanction Date>': request.form.get('sanction_date'),
             '<Take Over from>': request.form.get('take_over_from'),
-            '<In words>': request.form.get('in_words')
+            '<In words>': request.form.get('in_words'),
+            '<Pay Order Amount>': request.form.get('pay_order_amount'),
+            '<Payee Name>': request.form.get('payee_name'),
+            '<Date>': request.form.get('date')
         }
 
         template_name = request.form.get('template_name')
