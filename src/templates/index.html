@@ -4,118 +4,162 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document Automation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        header img {
+            height: 50px;
+        }
+        header h1 {
+            font-size: 24px;
+            margin: 0;
+            color: #007BFF;
+        }
+        h1 {
+            font-size: 28px;
+            color: #007BFF;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin: 10px 0 5px;
+            font-weight: 500;
+        }
+        input, select {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #007BFF;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Enter Required Data</h1>
-    <form method="post">
-        <label for="template_name">Select Template:</label>
-        <select name="template_name" required>
-            {% for template in templates %}
-                <option value="{{ template }}">{{ template }}</option>
-            {% endfor %}
-        </select><br>
+    <div class="container">
+        <header>
+            <img src="https://via.placeholder.com/150" alt="Logo">
+            <h1>DocuGen App</h1>
+        </header>
+        <h1>Enter Required Data</h1>
+        <form id="docForm" method="post" onsubmit="return validateForm()">
+            <label for="template_name">Select Template:</label>
+            <select name="template_name" id="template_name" required>
+                <option value="">--Select Template--</option>
+                {% for template in templates %}
+                    <option value="{{ template }}">{{ template }}</option>
+                {% endfor %}
+            </select>
 
-        <label for="applicant">Applicant:</label>
-        <input type="text" name="applicant" required><br>
+            <label for="applicant">Applicant:</label>
+            <input type="text" name="applicant" id="applicant" required>
+            <div class="error" id="applicant_error"></div>
 
-        <label for="age1">Age:</label>
-        <input type="text" name="age1" required><br>
+            <label for="co_applicant">Co-Applicant:</label>
+            <input type="text" name="co_applicant" id="co_applicant">
+            <div class="error" id="co_applicant_error"></div>
 
-        <label for="applicants_father">Applicant's Father:</label>
-        <input type="text" name="applicants_father" required><br>
+            <label for="loan_amount">Loan Amount:</label>
+            <input type="text" name="loan_amount" id="loan_amount" required pattern="\d+">
+            <div class="error" id="loan_amount_error"></div>
 
-        <label for="address1">Address:</label>
-        <input type="text" name="address1" required><br>
+            <label for="in_words">Loan Amount (in words):</label>
+            <input type="text" name="in_words" id="in_words">
+            <div class="error" id="in_words_error"></div>
 
-        <label for="co_applicant">Co-Applicant:</label>
-        <input type="text" name="co_applicant"><br>
+            <label for="pay_order_amount">Pay Order Amount:</label>
+            <input type="text" name="pay_order_amount" id="pay_order_amount">
+            <div class="error" id="pay_order_amount_error"></div>
 
-        <label for="age2">Co-Applicant's Age:</label>
-        <input type="text" name="age2"><br>
+            <label for="payee_name">Payee Name:</label>
+            <input type="text" name="payee_name" id="payee_name">
+            <div class="error" id="payee_name_error"></div>
 
-        <label for="co_applicants_father">Co-Applicant's Father:</label>
-        <input type="text" name="co_applicants_father"><br>
+            <label for="date">Date:</label>
+            <input type="date" name="date" id="date" required>
+            <div class="error" id="date_error"></div>
 
-        <label for="co_applicant_address2">Co-Applicant's Address:</label>
-        <input type="text" name="co_applicant_address2"><br>
+            <button type="submit">Generate Documents</button>
+        </form>
+    </div>
 
-        <label for="co_applicant2">Co-Applicant 2:</label>
-        <input type="text" name="co_applicant2"><br>
+    <script>
+        function validateForm() {
+            let valid = true;
 
-        <label for="age3">Co-Applicant 2's Age:</label>
-        <input type="text" name="age3"><br>
+            const applicant = document.getElementById('applicant');
+            const loanAmount = document.getElementById('loan_amount');
+            const date = document.getElementById('date');
 
-        <label for="co_applicants_father2">Co-Applicant 2's Father:</label>
-        <input type="text" name="co_applicants_father2"><br>
+            if (applicant.value.trim() === '') {
+                document.getElementById('applicant_error').innerText = 'Applicant name is required';
+                valid = false;
+            } else {
+                document.getElementById('applicant_error').innerText = '';
+            }
 
-        <label for="co_applicants_address3">Co-Applicant 2's Address:</label>
-        <input type="text" name="co_applicants_address3"><br>
+            if (loanAmount.value.trim() === '' || !loanAmount.checkValidity()) {
+                document.getElementById('loan_amount_error').innerText = 'Valid loan amount is required';
+                valid = false;
+            } else {
+                document.getElementById('loan_amount_error').innerText = '';
+            }
 
-        <label for="co_applicant3">Co-Applicant 3:</label>
-        <input type="text" name="co_applicant3"><br>
+            if (date.value.trim() === '') {
+                document.getElementById('date_error').innerText = 'Date is required';
+                valid = false;
+            } else {
+                document.getElementById('date_error').innerText = '';
+            }
 
-        <label for="age4">Co-Applicant 3's Age:</label>
-        <input type="text" name="age4"><br>
-
-        <label for="co_applicants_father3">Co-Applicant 3's Father:</label>
-        <input type="text" name="co_applicants_father3"><br>
-
-        <label for="co_applicants_address4">Co-Applicant 3's Address:</label>
-        <input type="text" name="co_applicants_address4"><br>
-
-        <label for="property_address">Property Address:</label>
-        <input type="text" name="property_address" required><br>
-
-        <label for="area">Area:</label>
-        <input type="text" name="area" required><br>
-
-        <label for="survey_no">Survey Number:</label>
-        <input type="text" name="survey_no" required><br>
-
-        <label for="list1">List 1:</label>
-        <input type="text" name="list1"><br>
-
-        <label for="list2">List 2:</label>
-        <input type="text" name="list2"><br>
-
-        <label for="list3">List 3:</label>
-        <input type="text" name="list3"><br>
-
-        <label for="list4">List 4:</label>
-        <input type="text" name="list4"><br>
-
-        <label for="list5">List 5:</label>
-        <input type="text" name="list5"><br>
-
-        <label for="list6">List 6:</label>
-        <input type="text" name="list6"><br>
-
-        <label for="north">North:</label>
-        <input type="text" name="north"><br>
-
-        <label for="south">South:</label>
-        <input type="text" name="south"><br>
-
-        <label for="east">East:</label>
-        <input type="text" name="east"><br>
-
-        <label for="west">West:</label>
-        <input         type="text" name="west"><br>
-
-        <label for="loan_amount">Loan Amount:</label>
-        <input type="text" name="loan_amount" required><br>
-
-        <label for="sanction_date">Sanction Date:</label>
-        <input type="text" name="sanction_date" required><br>
-
-        <label for="take_over_from">Take Over From:</label>
-        <input type="text" name="take_over_from"><br>
-
-        <label for="in_words">Loan Amount (in words):</label>
-        <input type="text" name="in_words"><br>
-
-        <button type="submit">Generate Documents</button>
-    </form>
+            return valid;
+        }
+    </script>
 </body>
 </html>
-
