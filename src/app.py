@@ -17,15 +17,13 @@ def replace_placeholders(doc, data):
                         inline[i].text = inline[i].text.replace(key, value if value else '')
     return doc
 
-def process_documents(template_dir, data, output_dir):
-    for template_file in os.listdir(template_dir):
-        if template_file.endswith('.docx'):
-            template_path = os.path.join(template_dir, template_file)
-            output_path = os.path.join(output_dir, template_file)
-            
-            document = Document(template_path)
-            document = replace_placeholders(document, data)
-            document.save(output_path)
+def process_documents(template_name, data, output_dir):
+    template_path = os.path.join('src/templates', template_name)
+    output_path = os.path.join(output_dir, template_name)
+    
+    document = Document(template_path)
+    document = replace_placeholders(document, data)
+    document.save(output_path)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -66,12 +64,13 @@ def index():
             '<In words>': request.form.get('in_words')
         }
 
+        template_name = request.form.get('template_name')
+        
         temp_dir = tempfile.mkdtemp()
-        template_dir = 'templates'
         output_dir = os.path.join(temp_dir, 'outputs')
         os.makedirs(output_dir, exist_ok=True)
         
-        process_documents(template_dir, data, output_dir)
+        process_documents(template_name, data, output_dir)
         
         output_zip = os.path.join(temp_dir, 'documents.zip')
         with zipfile.ZipFile(output_zip, 'w') as zipf:
@@ -80,7 +79,9 @@ def index():
                     zipf.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), output_dir))
         
         return send_file(output_zip, as_attachment=True, attachment_filename='documents.zip')
-    return render_template('index.html')
+    else:
+        templates = os.listdir('src/templates')
+        return render_template('index.html', templates=templates)
 
 if __name__ == '__main__':
     app.run(debug=True)
