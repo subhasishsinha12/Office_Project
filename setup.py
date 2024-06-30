@@ -23,4 +23,14 @@ author='Subhasish Sinha',
 author_email='subhasishsinha12@gmail.com',
 packages=find_packages(),
 install_requires=get_requirements('requirement.txt')
-)
+),
+entry_points={
+        "console_scripts": [
+            "generate-documents=src.app:main",
+        ],
+    },
+classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+    ]
