@@ -19,6 +19,8 @@ def replace_placeholders(doc, data):
 
 def process_documents(template_name, data, output_dir):
     template_path = os.path.join('src/templates', template_name)
+    if not os.path.exists(template_path):
+        print(f"Template file does not exist at: {template_path}")
     output_path = os.path.join(output_dir, template_name)
     
     document = Document(template_path)
