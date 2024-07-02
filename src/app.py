@@ -1,31 +1,10 @@
-from flask import Flask, request, render_template, send_file
-from docx import Document
 import os
 import tempfile
-from io import BytesIO
 import zipfile
+from flask import Flask, request, render_template, send_file
+from document_generator import generate_document
 
 app = Flask(__name__)
-
-def replace_placeholders(doc, data):
-    for paragraph in doc.paragraphs:
-        for key, value in data.items():
-            if key in paragraph.text:
-                inline = paragraph.runs
-                for i in range(len(inline)):
-                    if key in inline[i].text:
-                        inline[i].text = inline[i].text.replace(key, value if value else '')
-    return doc
-
-def process_documents(template_name, data, output_dir):
-    template_path = os.path.join('src/templates', template_name)
-    if not os.path.exists(template_path):
-        print(f"Template file does not exist at: {template_path}")
-    output_path = os.path.join(output_dir, template_name)
-    
-    document = Document(template_path)
-    document = replace_placeholders(document, data)
-    document.save(output_path)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -42,14 +21,14 @@ def index():
             '<Co-Applicant2>': request.form.get('co_applicant2'),
             '<Age3>': request.form.get('age3'),
             '<Co-Applicants Father2>': request.form.get('co_applicants_father2'),
-            '<Co-Applicants Address3>': request.form.get('co_applicants_address3'),
+            '<Co-applicants Address3>': request.form.get('co_applicants_address3'),
             '<Co-Applicant3>': request.form.get('co_applicant3'),
             '<Age4>': request.form.get('age4'),
             '<Co-Applicants Father3>': request.form.get('co_applicants_father3'),
-            '<Co-Applicants Address4>': request.form.get('co_applicants_address4'),
+            '<Co-applicants Address4>': request.form.get('co_applicants_address4'),
             '<Property Address>': request.form.get('property_address'),
             '<Area>': request.form.get('area'),
-            '<Survey No>': request.form.get('survey_no'),
+            '<Survey Number>': request.form.get('survey_no'),
             '<List1>': request.form.get('list1'),
             '<List2>': request.form.get('list2'),
             '<List3>': request.form.get('list3'),
@@ -62,11 +41,11 @@ def index():
             '<West>': request.form.get('west'),
             '<Loan Amount>': request.form.get('loan_amount'),
             '<Sanction Date>': request.form.get('sanction_date'),
-            '<Take Over from>': request.form.get('take_over_from'),
+            '<Take Over From>': request.form.get('take_over_from'),
             '<In words>': request.form.get('in_words'),
             '<Pay Order Amount>': request.form.get('pay_order_amount'),
             '<Payee Name>': request.form.get('payee_name'),
-            '<Date>': request.form.get('date')
+            '<Date>': request.form.get('date'),
         }
 
         template_name = request.form.get('template_name')
@@ -74,18 +53,37 @@ def index():
         temp_dir = tempfile.mkdtemp()
         output_dir = os.path.join(temp_dir, 'outputs')
         os.makedirs(output_dir, exist_ok=True)
-        
-        process_documents(template_name, data, output_dir)
-        
-        output_zip = os.path.join(temp_dir, 'documents.zip')
-        with zipfile.ZipFile(output_zip, 'w') as zipf:
-            for root, _, files in os.walk(output_dir):
-                for file in files:
-                    zipf.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), output_dir))
-        
-        return send_file(output_zip, as_attachment=True, attachment_filename='documents.zip')
+
+        try:
+            # Use the absolute path to ensure correct file reference
+            template_path = os.path.join(os.path.abspath('src'), 'templates', template_name)
+            print(f"Using template path: {template_path}")
+            
+            # List files in the templates directory
+            templates_dir = os.path.join(os.path.abspath('src'), 'templates')
+            available_templates = os.listdir(templates_dir)
+            print(f"Available templates: {available_templates}")
+            
+            if template_name not in available_templates:
+                raise FileNotFoundError(f"Template {template_name} not found in {templates_dir}")
+            
+            document = generate_document(template_path, data)
+            output_path = os.path.join(output_dir, template_name)
+            document.save(output_path)
+            
+            output_zip = os.path.join(temp_dir, 'documents.zip')
+            with zipfile.ZipFile(output_zip, 'w') as zipf:
+                for root, _, files in os.walk(output_dir):
+                    for file in files:
+                        zipf.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), output_dir))
+            
+            return send_file(output_zip, as_attachment=True, attachment_filename='documents.zip')
+        except Exception as e:
+            print(f"Error processing documents: {e}")
+            return "An error occurred while processing the document. Please try again."
+
     else:
-        templates = os.listdir('src/templates')
+        templates = os.listdir(os.path.join('src', 'templates'))
         return render_template('index.html', templates=templates)
 
 if __name__ == '__main__':

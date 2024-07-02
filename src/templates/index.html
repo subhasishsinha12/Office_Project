@@ -96,151 +96,13 @@
                     <option value="{{ template }}">{{ template }}</option>
                 {% endfor %}
             </select>
-
+            <!-- Add all your input fields here -->
             <label for="applicant">Applicant:</label>
             <input type="text" name="applicant" id="applicant" required>
             <div class="error" id="applicant_error"></div>
 
-            <label for="age1">Age:</label>
-            <input type="text" name="age1" id="age1" required pattern="\d+">
-            <div class="error" id="age1_error"></div>
-
-            <label for="applicants_father">Applicant's Father:</label>
-            <input type="text" name="applicants_father" id="applicants_father" required>
-            <div class="error" id="applicants_father_error"></div>
-
-            <label for="address1">Address:</label>
-            <input type="text" name="address1" id="address1" required>
-            <div class="error" id="address1_error"></div>
-
-            <label for="co_applicant">Co-Applicant:</label>
-            <input type="text" name="co_applicant" id="co_applicant">
-            <div class="error" id="co_applicant_error"></div>
-
-            <label for="age2">Co-Applicant's Age:</label>
-            <input type="text" name="age2" id="age2" pattern="\d+">
-            <div class="error" id="age2_error"></div>
-
-            <label for="co_applicants_father">Co-Applicant's Father:</label>
-            <input type="text" name="co_applicants_father" id="co_applicants_father">
-            <div class="error" id="co_applicants_father_error"></div>
-
-            <label for="co_applicant_address2">Co-Applicant's Address:</label>
-            <input type="text" name="co_applicant_address2" id="co_applicant_address2">
-            <div class="error" id="co_applicant_address2_error"></div>
-
-            <label for="co_applicant2">Co-Applicant 2:</label>
-            <input type="text" name="co_applicant2" id="co_applicant2">
-            <div class="error" id="co_applicant2_error"></div>
-
-            <label for="age3">Co-Applicant 2's Age:</label>
-            <input type="text" name="age3" id="age3" pattern="\d+">
-            <div class="error" id="age3_error"></div>
-
-            <label for="co_applicants_father2">Co-Applicant 2's Father:</label>
-            <input type="text" name="co_applicants_father2" id="co_applicants_father2">
-            <div class="error" id="co_applicants_father2_error"></div>
-
-            <label for="co_applicants_address3">Co-Applicant 2's Address:</label>
-            <input type="text" name="co_applicants_address3" id="co_applicants_address3">
-            <div class="error" id="co_applicants_address3_error"></div>
-
-            <label for="co_applicant3">Co-Applicant 3:</label>
-            <input type="text" name="co_applicant3" id="co_applicant3">
-            <div class="error" id="co_applicant3_error"></div>
-
-            <label for="age4">Co-Applicant 3's Age:</label>
-            <input type="text" name="age4" id="age4" pattern="\d+">
-            <div class="error" id="age4_error"></div>
-
-            <label for="co_applicants_father3">Co-Applicant 3's Father:</label>
-            <input type="text" name="co_applicants_father3" id="co_applicants_father3">
-            <div class="error" id="co_applicants_father3_error"></div>
-
-            <label for="co_applicants_address4">Co-Applicant 3's Address:</label>
-            <input type="text" name="co_applicants_address4" id="co_applicants_address4">
-            <div class="error" id="co_applicants_address4_error"></div>
-
-            <label for="property_address">Property Address:</label>
-            <input type="text" name="property_address" id="property_address" required>
-            <div class="error" id="property_address_error"></div>
-
-            <label for="area">Area:</label>
-            <input type="text" name="area" id="area" required>
-            <div class="error" id="area_error"></div>
-
-            <label for="survey_no">Survey Number:</label>
-            <input type="text" name="survey_no" id="survey_no" required>
-            <div class="error" id="survey_no_error"></div>
-
-            <label for="list1">List 1:</label>
-            <input type="text" name="list1" id="list1">
-            <div class="error" id="list1_error"></div>
-
-            <label for="list2">List 2:</label>
-            <input type="text" name="list2" id="list2">
-            <div class="error" id="list2_error"></div>
-
-            <label for="list3">List 3:</label>
-            <input type="text" name="list3" id="list3">
-            <div class="error" id="list3_error"></div>
-
-            <label for="list4">List 4:</label>
-            <input type="text" name="list4" id="list4">
-            <div class="error" id="list4_error"></div>
-
-            <label for="list5">List 5:</label>
-            <input type="text" name="list5" id="list5">
-            <div class="error" id="list5_error"></div>
-
-            <label for="list6">List 6:</label>
-            <input type="text" name="list6" id="list6">
-            <div class="error" id="list6_error"></div>
-
-            <label for="north">North:</label>
-            <input type="text" name="north" id="north">
-            <div class="error" id="north_error"></div>
-
-            <label for="south">South:</label>
-            <input type="text" name="south" id="south">
-            <div class="error" id="south_error"></div>
-
-            <label for="east">East:</label>
-            <input type="text" name="east" id="east">
-            <div class="error" id="east_error"></div>
-
-            <label for="west">West:</label>
-            <input type="text" name="west" id="west">
-            <div class="error" id="west_error"></div>
-
-            <label for="loan_amount">Loan Amount:</label>
-            <input type="text" name="loan_amount" id="loan_amount" required pattern="\d+">
-            <div class="error" id="loan_amount_error"></div>
-
-            <label for="sanction_date">Sanction Date:</label>
-            <input type="text" name="sanction_date" id="sanction_date" required>
-            <div class="error" id="sanction_date_error"></div>
-
-            <label for="take_over_from">Take Over From:</label>
-            <input type="text" name="take_over_from" id="take_over_from">
-            <div class="error" id="take_over_from_error"></div>
-
-            <label for="in_words">Loan Amount (in words):</label>
-            <input type="text" name="in_words" id="in_words">
-            <div class="error" id="in_words_error"></div>
-
-            <label for="pay_order_amount">Pay Order Amount:</label>
-            <input type="text" name="pay_order_amount" id="pay_order_amount">
-            <div class="error" id="pay_order_amount_error"></div>
-
-            <label for="payee_name">Payee Name:</label>
-            <input type="text" name="payee_name" id="payee_name">
-            <div class="error" id="payee_name_error"></div>
-
-            <label for="date">Date:</label>
-            <input type="date" name="date" id="date" required>
-            <div class="error" id="date_error"></div>
-
+            <!-- Continue with other fields -->
+            
             <button type="submit">Generate Documents</button>
         </form>
     </div>
@@ -258,14 +120,6 @@
                     document.getElementById(`${input.id}_error`).innerText = '';
                 }
             });
-
-            const loanAmount = document.getElementById('loan_amount');
-            if (loanAmount.value.trim() !== '' && !loanAmount.checkValidity()) {
-                document.getElementById('loan_amount_error').innerText = 'Valid loan amount is required';
-                valid = false;
-            } else {
-                document.getElementById('loan_amount_error').innerText = '';
-            }
 
             return valid;
         }

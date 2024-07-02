@@ -4,4 +4,7 @@ seaborn
 Flask
 python-docx
 openpyxl
+transformers
+torch
+tensorflow
 -e .
