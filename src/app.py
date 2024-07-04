@@ -77,10 +77,10 @@ def index():
                     for file in files:
                         zipf.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), output_dir))
             
-            return send_file(output_zip, as_attachment=True, attachment_filename='documents.zip')
+            return send_file(output_zip, as_attachment=True, download_name='documents.zip')
         except Exception as e:
             print(f"Error processing documents: {e}")
-            return "An error occurred while processing the document. Please try again."
+            return f"An error occurred while processing the document: {e}. Please try again."
 
     else:
         templates = os.listdir(os.path.join('src', 'templates'))
