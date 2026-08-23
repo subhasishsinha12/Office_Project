@@ -1,0 +1,8 @@
+# BankAI Core + BranchOne prototype dependencies.
+# Kept separate from requirement.txt (the pre-existing, unrelated document
+# automation project in this repository) to avoid coupling the two.
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+pydantic==2.9.2
+httpx==0.27.2
+pytest==8.3.3

@@ -1,0 +1,40 @@
+# Target deployment shape (§18/§46). The branchone_api container currently
+# keeps ServiceRequest state in-process (apps/branchone_api/store.py) and
+# does not yet read DATABASE_URL/REDIS_URL — postgres/redis are included
+# here as the schema-of-record target (data/schema.sql) and session/
+# idempotency cache target for the next slice, not yet wired into the app.
+version: "3.9"
+
+services:
+  branchone_api:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile.api
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://bankai:bankai@postgres:5432/bankai_core
+      REDIS_URL: redis://redis:6379/0
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: bankai
+      POSTGRES_PASSWORD: bankai
+      POSTGRES_DB: bankai_core
+    volumes:
+      - ../data/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  pgdata:

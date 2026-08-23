@@ -1,0 +1,16 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY requirements-bankai.txt .
+RUN pip install --no-cache-dir -r requirements-bankai.txt
+
+COPY bankai_core/ bankai_core/
+COPY workflow/ workflow/
+COPY cbs_adapter/ cbs_adapter/
+COPY apps/ apps/
+COPY data/ data/
+
+EXPOSE 8000
+
+CMD ["uvicorn", "apps.branchone_api.main:app", "--host", "0.0.0.0", "--port", "8000"]
